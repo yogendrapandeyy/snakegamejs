@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snake game</title>
+    <style>
+        
+        #charh{
+            display:inline;
+            height:20px;
+            
+            background-color:red;
+            
+        }
+        
+        #char{
+            width:80px;
+            position:absolute;
+            background-color:aqua
+          
+        }
+        #chart{
+            display:inline;
+            height:20px;
+            width:40px;
+            
+            
+        }
+        #navi{
+            position:fixed;
+            bottom:20px;
+            right:50px;
+           
+        }
+      
+
+            
+        
+
+    </style>
+    </head>
+    <body>
+    <div id="char">
+        
+        <div id="chart">tail</div>
+        <div id="charh">head</div>
+    </div>
+        
+        
+    
+    <div id="navi">
+        
+    <button id="up">up</button>
+    <button id="down">down</button>
+    <button id="left">left</button>
+    <button id="right">right</button>
+     </div>
+     <div id="box1">
+     
+
+        </div>
+        </div>
+<script>
+    // i need to first make the snake character always moving in box and then add the rules 
+    // for the game
+    
+   
+    let char=document.getElementById("char")
+    let charh=document.getElementById("charh")
+    let chart=document.getElementById("chart")
+
+    //attempt to create a random position of food and then creteing its instances after food being eaten and then
+    //creating new instances and its behaviour
+
+  /*let food=document.createElement("div")
+  
+
+  food.style.left=Math.floor(Math.random() *700)+"px";
+  food.style.top=Math.floor(Math.random()*600)+"px";
+  food.style.position="absolute";
+  food.style.backgroundColor="red";
+  food.style.width="40px"
+  food.style.height="50px";
+
+  let box1=document.getElementById("box1")
+  box1.append(food)
+
+  console.log(food.style.left)
+  console.log(food.style.top)
+  */
+
+  let box1=document.getElementById("box1")
+
+     char.style.width="80px";
+
+    //chart.style.width="400px";
+  // chart.style.height="400px";
+
+    console.log(chart.style.width)
+
+    
+   
+
+    let left=document.getElementById("left")
+    let right=document.getElementById("right")
+    let up=document.getElementById("up")
+    let down=document.getElementById("down")
+
+    
+    
+    let resumex=0;
+    let resumey=0;  
+    //console.log(resumex)
+
+    char.style.left="200px";
+    char.style.top="40px";
+
+
+    let widthc=char.style.width
+    console.log(widthc)
+
+
+    let charx=parseInt(getComputedStyle(char).left);
+   let chary=parseInt(getComputedStyle(char).top);
+     
+   
+console.log(charx)
+    console.log(chary)
+
+     console.log(getComputedStyle(char).left)
+
+
+
+     let framesplus=2;
+    let frames=0;
+    let framesd=0;
+    let id1;
+    let movey;
+    let moveyx;
+    let moveup1;
+    let x1=char.getClientRects()[0].left
+    console.log(x1)
+    
+    let r1;
+    let r2;
+    let t1;
+    let t2;
+    let b1;
+    let b2;
+    //x1  for left portion distance from left for char 
+    //r1and r2 for right portion distance from left for char and food2
+    //t1 and t2 for top poriton distacne from top of screen for char and food2
+    //similarily for b1 and b1 for bottom 
+
+   //console.log(char.getClientRects[0].right)
+   console.log(char.getClientRects()[0].right)
+
+
+
+  let x=document.createElement("div")
+  x.innerHTML="" 
+
+//using the function below to put the first food on screen this oen time food at random position and then subsequent food
+//initially i put the positon of random food but then i was putting the food at same random position, so then i had to
+//define the whole function at mutilple random positions
+//function newfood(){
+    let food2=document.createElement("div")
+     food2.style.left=Math.floor(Math.random() *700)+"px";
+  food2.style.top=Math.floor(Math.random()*600)+"px";
+  food2.style.position="absolute";
+  food2.style.backgroundColor="green";
+  food2.style.width="30px"
+  food2.style.height="30px";
+
+  box1.append(food2)
+
+
+
+
+    
+   //function to check food overlap with snake character to to to effect food eaten, or removing food from screen,
+    //it is used in each direction click event, whenever any turn buutton animation switches, initially i put this 
+    // function outside any direction key click, but then it was executed only once in the beginning and it was not 
+    //useful, then i decided to put it into directional buttons , i will try to improve its functionality in future
+ 
+  //below code for implementing the approx location overlap as exact overlapping was not working for maybe exact 
+    //overlap not hapenning
+
+   
+   
+
+function checkfood2(){
+    //get the getboundclientrect values then also get the transformation angular values, then detransfrom the angular
+    //transformation as the get boundrect does not see transformation, it keeps the bounding rectance from initial 
+    //position
+   //
+
+   if(box1.children[0]){
+if(char.getClientRects()[0].right<food2.getClientRects()[0].right && char.getClientRects()[0].right>food2.getClientRects()[0].left){
+
+if(char.getClientRects()[0].top>food2.getClientRects()[0].top && char.getClientRects()[0].top<food2.getClientRects()[0].bottom){
+    
+    box1.removeChild(food2)
+     //getComputedStyle(chart).width=parseInt(getComputedStyle(chart).width)+200+"px";
+
+     //console.log( chart.style.width)
+     
+     //random food respawn or first food eaten then new food on screen 
+     //let food2=document.createElement("div")
+
+     //use of window.innerwidth and window.innerheight to get width and height of display
+     food2.style.left=Math.floor(Math.random() * window.innerHeight)+"px";
+  food2.style.top=Math.floor(Math.random()*window.innerHeight)+"px";
+  food2.style.position="absolute";
+  food2.style.backgroundColor="green";
+  food2.style.width="30px"
+  food2.style.height="30px";
+
+  // char.style.width=parseInt(char.style.width)+10+"px";
+  //width or length not chnaging due to some error , it says it is a readonly property, need to check is out again
+  //but then using a variable to to store its value and chanaged as below
+  char.style.width=parseInt(widthc)+10+"px";
+
+  console.log(char.style.width)
+  widthc=char.style.width
+
+
+
+  box1.append(food2)
+
+
+
+
+
+     //box1.appendChild(food)
+
+    
+}
+}
+   }
+}
+console.log(char.getClientRects()[0].left)
+   // console.log(food.getClientRects()[0].left)
+
+
+
+    //actually the above appoach of using some posiiton values with loop for multiple nearby points is not working for 
+    //some reason , actually is should work buyt was not working so i am going to use now getboundingboxrect() method, 
+    // this method gives a rectangle of elements boundary, its methods , .left- for etting distance of left side of 
+    //element from left side of screen, .right:for getting distance from left of screen to right boundary of element
+    //both left and right method measure distacne from left side of screen 
+    //similarily for top and bottom can be used
+    //then to check collision between 2 elements use constion
+    //ele2.getclientboundingrect.left<ele1.getboundingrect(right) to check 2nd element between boundary of elem1 horizont
+    //&& ele2.getboundingrect.left>ele1.getboundingrect.left these 2 contion to check horizontal overlap
+    //for vertical overlapping checking together with horizontal
+    //ele2.getboundingrect.top<ele1.getboundingrect.bottom
+        //&& ele.getboundingrect.bottom>ele1.getboundingrect.top
+        //above 2 lines to check vertical ovelapping or collision
+        //first line means that if we know ele1 position and ele2, then to overlap vertically if ele1 is at a known 
+        //position then ele2 top distance should be lesser than ele1 bottom distance so this checks that top portion
+        //
+        //then then bottom of ele2 should be lower than top of ele1 not completely above,
+        //ele2getboundrect.bottom<ele1getbounding rect.top
+
+        //i need to chedck for different condtion for top to bottom and bottom to top function as during these 
+        //alignment of snake character is different from normal case, i need to apply transformation and then use
+        //collision detection for getclientrect()
+
+
+      
+
+        function checkfoodtoptobottom(){
+       if(char.style.transform("rotate(90deg)").getClientRects()[0].right>food.getClientRects()[0].left && char.style.transform("rotate(90deg)").right<food.getClientRects()[0].left){
+            if(char.style.transform("rotate(90deg)").getClientRects()[0].top>food.getBoundingClientRect()[0].top && char.transform("rotate(90deg)").getClientRects()[0].top>food.getBoundingClientRect()[0].bottom){
+                box1.removeChild(food)
+
+                //inside this function itself i want that after removal of food a new food box should be put on screen
+            //at a random location on page using math.random like function
+            //so a element should be created food element and put in a random location and should have same behavour as 
+            //this food
+
+            }
+
+        }
+    }
+    
+
+     function framesright(){
+        
+        cancelAnimationFrame(moveup1)
+        cancelAnimationFrame(moveyx)
+        cancelAnimationFrame((movey))
+
+
+
+        
+
+
+        if(parseInt(char.style.left)>window.innerWidth){
+            char.style.left=parseInt(char.style.left)-window.innerWidth+"px";
+        }
+        char.style.left=parseInt(char.style.left)+1+"px";
+         char.style.transform="rotate(0deg)"
+       // resumex=parseInt(char.style.left)
+        //console.log(resumex)
+        id1=requestAnimationFrame(framesright)
+
+        resumex=parseInt(char.style.left)
+
+        //checkfood()
+
+        checkfood2()
+       
+     }
+
+     framesright()
+
+     function movedown(){
+
+//found some issue with movedown and moveleft and dont work as expected after a few mixed clicks
+
+        cancelAnimationFrame(id1)
+        cancelAnimationFrame(moveyx)
+        cancelAnimationFrame(moveup1)
+             
+     //char.style.left=resumex+"px";
+     //char.style.left=resumex+"px";
+     char.style.transform="rotate(90deg)"
+     console.log(char.style.left)
+
+
+     if(parseInt(char.style.top)>window.innerHeight){
+        char.style.top=parseInt(char.style.top)-window.innerHeight+"px";
+        console.log(char.style.top)
+
+        
+    
+
+     }
+     
+     char.style.top=parseInt(char.style.top)+1+"px";
+        
+
+        movey=requestAnimationFrame(movedown)
+        resumex=parseInt(char.style.left)
+     
+       // checkfood()
+
+       checkfood2()
+       // checkfoodtoptobottom()    
+
+     }
+
+      down.addEventListener("click",movedown)
+
+
+      function moveleft(){
+
+        cancelAnimationFrame(movey)
+        cancelAnimationFrame(id1)
+    cancelAnimationFrame(moveup1)
+
+
+        
+
+        if(parseInt(char.style.left)<0){
+            char.style.left=parseInt(char.style.left)+window.innerWidth+"px";
+
+            resumex=parseInt(char.style.left)
+        }
+        char.style.left=parseInt(char.style.left)-1+"px";
+        char.style.transform="rotate(180deg)"
+        
+    
+        
+        //resumex=parseInt(char.style.left);
+        console.log(resumex)
+
+       //these both line above cause, we want a starting resuming point from where to turn, that we use to get and minus
+       //2 to move left then we update resumex to do the same for next frames, its basically for getting the resuming 
+       //effect , only using char.style.left was not resuming
+
+        moveyx=requestAnimationFrame(moveleft)
+
+
+        //checkfood()
+
+        checkfood2()
+       
+      }
+
+
+
+
+ left.addEventListener("click",moveleft)
+     
+    
+  function moveup(){
+
+    cancelAnimationFrame(moveyx)
+    cancelAnimationFrame(id1)
+    cancelAnimationFrame(movey)
+
+    if(parseInt(char.style.top)<0){
+        char.style.top=parseInt(char.style.top)+window.innerHeight+"px";
+    }
+
+    char.style.top=parseInt(char.style.top)-1+"px";
+    char.style.transform="rotate(-90deg)"
+    
+    moveup1=requestAnimationFrame(moveup)
+
+    resumey=parseInt(char.style.top)
+
+   // checkfood()
+
+   checkfood2()
+
+  }
+
+  up.addEventListener("click",moveup)
+
+  right.addEventListener("click",framesright)
+
+  console.log(resumex)
+  //console.log(charh.style.top)
+  //console.log(chart.style.left)
+  console.log(resumey)
+
+  
+
+</script>
+
+    
+</body>
+</html>
